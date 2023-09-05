@@ -2,81 +2,128 @@
 <html>
   <head>
     <title>I/ ROUTE</title>
+    <style>
+      @font-face {
+        font-family: CambaiMinimalist;
+        src: url(CambaiMinimalist-3zeJ6.ttf);
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        position: relative;
+        background-color: #252729;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        cursor: crosshair;
+      }
+
+      .flex-container {
+        position: relative;
+        text-align: center;
+        max-width: 100%;
+        max-height: 100%;
+      }
+
+      .flex-container > div {
+        opacity: 1;
+        background-color: #252729;
+        margin: 0px;
+        width: 100%;
+        height: auto;
+        font-size: 30px;
+        color: white;
+      }
+
+      #cursor-text {
+        position: absolute;
+        display: none;
+        color: white;
+        border-radius: 5px;
+        background-color: gray;
+        margin-top: -30px;
+        opacity: 0.6; 
+        padding: 10px;
+        pointer-events: none;
+        font-family: Arial;
+        font-style: bold;
+        transform: translate(-50%, -100%);
+        z-index: 2;
+      }
+
+      body::-webkit-scrollbar {
+        display: none;
+      }
+    </style>
   </head>
-  <style>
-    @font-face {
-      font-family: CambaiMinimalist;
-      src: url(CambaiMinimalist-3zeJ6.ttf);
-  }  
-  
-  .flex-container {
-    display: flex;
-  }
-  
-  .flex-container > div {
-    opacity: 1;
-    background-color: #252729;
-    margin: 0px;
-    width: 100px;
-    height: auto;
-    font-size: 30px;
-    color: white;
-  }
-  </style>
-  <body style="text-align: center; display: inline-block; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #252729;">
-    <h1 style="position: absolute; margin-top: -11%; font-family: CambaiMinimalist; font-size: 15px; color: white; text-align: center;">ESCOLHA QUALQUER LUGAR NO MAPA E VEJA A ROTA MAIS RAPIDA</h1>
-    <br>
-    <div id="lab" style="width: 600px; height: 600px; margin-right: -50%; border-radius: 9px; background-color: white">
-      <div style="display:inline-block">
-          <div class="flex-container">
-            <div><img style="width: 100%; height: auto;" src="felpoo__-1696312208760676628-20230828_210201-img1.jpg"></div>
-            <div><img style="width: 100%; height: auto;" src="felpoo__-1696312208760676628-20230828_210201-img1.jpg"></div>
-            <div><img style="width: 100%; height: auto;" src="felpoo__-1696312208760676628-20230828_210201-img1.jpg"></div>
-            <div><img style="width: 100%; height: auto;" src="felpoo__-1696312208760676628-20230828_210201-img1.jpg"></div>
-            <div><img style="width: 100%; height: auto;" src="felpoo__-1696312208760676628-20230828_210201-img1.jpg"></div>
-            <div><img style="width: 100%; height: auto;" src="felpoo__-1696312208760676628-20230828_210201-img1.jpg"></div>
-          </div>
-          <div class="flex-container">
-            <div><img style="width: 100%; height: auto;" src="felpoo__-1696312208760676628-20230828_210201-img1.jpg"></div>
-            <div><img style="width: 100%; height: auto;" src="felpoo__-1696312208760676628-20230828_210201-img1.jpg"></div>
-            <div><img style="width: 100%; height: auto;" src="felpoo__-1696312208760676628-20230828_210201-img1.jpg"></div>
-            <div><img style="width: 100%; height: auto;" src="felpoo__-1696312208760676628-20230828_210201-img1.jpg"></div>
-            <div><img style="width: 100%; height: auto;" src="felpoo__-1696312208760676628-20230828_210201-img1.jpg"></div>
-            <div><img style="width: 100%; height: auto;" src="felpoo__-1696312208760676628-20230828_210201-img1.jpg"></div>
-          </div>
-          <div class="flex-container">
-            <div><img style="width: 100%; height: auto;" src="felpoo__-1696312208760676628-20230828_210201-img1.jpg"></div>
-            <div><img style="width: 100%; height: auto;" src="felpoo__-1696312208760676628-20230828_210201-img1.jpg"></div>
-            <div><img style="width: 100%; height: auto;" src="felpoo__-1696312208760676628-20230828_210201-img1.jpg"></div>
-            <div><img style="width: 100%; height: auto;" src="felpoo__-1696312208760676628-20230828_210201-img1.jpg"></div>
-            <div><img style="width: 100%; height: auto;" src="felpoo__-1696312208760676628-20230828_210201-img1.jpg"></div>
-            <div><img style="width: 100%; height: auto;" src="felpoo__-1696312208760676628-20230828_210201-img1.jpg"></div>
-          </div>
-          <div class="flex-container">
-            <div><img style="width: 100%; height: auto;" src="felpoo__-1696312208760676628-20230828_210201-img1.jpg"></div>
-            <div><img style="width: 100%; height: auto;" src="felpoo__-1696312208760676628-20230828_210201-img1.jpg"></div>
-            <div><img style="width: 100%; height: auto;" src="felpoo__-1696312208760676628-20230828_210201-img1.jpg"></div>
-            <div><img style="width: 100%; height: auto;" src="felpoo__-1696312208760676628-20230828_210201-img1.jpg"></div>
-            <div><img style="width: 100%; height: auto;" src="felpoo__-1696312208760676628-20230828_210201-img1.jpg"></div>
-            <div><img style="width: 100%; height: auto;" src="felpoo__-1696312208760676628-20230828_210201-img1.jpg"></div>
-          </div>
-          <div class="flex-container">
-            <div><img style="width: 100%; height: auto;" src="felpoo__-1696312208760676628-20230828_210201-img1.jpg"></div>
-            <div><img style="width: 100%; height: auto;" src="felpoo__-1696312208760676628-20230828_210201-img1.jpg"></div>
-            <div><img style="width: 100%; height: auto;" src="felpoo__-1696312208760676628-20230828_210201-img1.jpg"></div>
-            <div><img style="width: 100%; height: auto;" src="felpoo__-1696312208760676628-20230828_210201-img1.jpg"></div>
-            <div><img style="width: 100%; height: auto;" src="felpoo__-1696312208760676628-20230828_210201-img1.jpg"></div>
-            <div><img style="width: 100%; height: auto;" src="felpoo__-1696312208760676628-20230828_210201-img1.jpg"></div>
-          </div>
-          <div class="flex-container">
-            <div><img style="width: 100%; height: auto;" src="felpoo__-1696312208760676628-20230828_210201-img1.jpg"></div>
-            <div><img style="width: 100%; height: auto;" src="felpoo__-1696312208760676628-20230828_210201-img1.jpg"></div>
-            <div><img style="width: 100%; height: auto;" src="felpoo__-1696312208760676628-20230828_210201-img1.jpg"></div>
-            <div><img style="width: 100%; height: auto;" src="felpoo__-1696312208760676628-20230828_210201-img1.jpg"></div>
-            <div><img style="width: 100%; height: auto;" src="felpoo__-1696312208760676628-20230828_210201-img1.jpg"></div>
-            <div><img style="width: 100%; height: auto;" src="felpoo__-1696312208760676628-20230828_210201-img1.jpg"></div>
-          </div>
+  <body>
+    <div id="cursor-text">SELECIONE UM PONTO DE ORIGEM</div>
+    <div class="flex-container">
+      <div>
+        <img id="mapa" style="max-width: 50%;" src="map.jpg">
       </div>
     </div>
+    <script>
+      const cursorText = document.getElementById('cursor-text');
+
+      document.addEventListener('mousemove', (e) => {
+        const x = e.clientX;
+        const y = e.clientY;
+        cursorText.style.display = 'block';
+        cursorText.style.left = `${x}px`;
+        cursorText.style.top = `${y}px`;
+      });
+
+      document.addEventListener('mouseout', () => {
+        cursorText.style.display = 'none';
+      });
+    
+      document.getElementById('mapa').addEventListener('click', (e) => {
+          const x = e.offsetX;
+          const y = e.offsetY;
+          
+          if(x >= 18 && x <= 660 && y >= 48 && y <= 80){
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida 1');
+          }
+
+          if(x >= 170 && x <= 200 && y >= 86 && y <= 358){
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Rua 5');
+          }
+
+          if(x >= 18 && x <= 167 && y >= 237 && y <= 267){
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Rua 2');
+          }
+
+          if(x >= 18 && x <= 659 && y >= 363 && y <= 389){
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
+          }
+
+          if(x >= 284 && x <= 316 && y >= 84 && y <= 356){
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Rua 7');
+          }
+
+          if(x >= 321 && x <= 587 && y >= 235 && y <= 258){
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Rua 4');
+          }
+
+          if(x >= 445 && x <= 472 && y >= 86 && y <= 228){
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Rua 8');
+          }
+          else if(x >= 447 && x <= 475 && y >= 266 && y <= 358){
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Rua 8');
+          }
+
+          if(x >= 503 && x <= 533 && y >= 394 && y <= 471){
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Rua 11');
+          }
+
+          if(x >= 598 && x <= 625 && y >= 84 && y <= 355){
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Rua 13');
+          }
+        });
+    </script>
   </body>
 </html>
