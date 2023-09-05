@@ -5,7 +5,7 @@
     <style>
       @font-face {
         font-family: CambaiMinimalist;
-        src: url(CambaiMinimalist-3zeJ6.ttf);
+        src: url(/static/CambaiMinimalist-3zeJ6.ttf);
       }
 
       body {
@@ -63,11 +63,26 @@
     <div id="cursor-text">SELECIONE UM PONTO DE ORIGEM</div>
     <div class="flex-container">
       <div>
-        <img id="mapa" style="max-width: 50%;" src="map.jpg">
+        <img id="mapa" style="max-width: 50%;" src="/static/map.jpg">
+        <form action="/" method="post">
+          <input type="hidden" id="origem" value="" name="origen" onchange="verificarenvio()">
+          <input type="hidden" id="destino" value="" name="destinon" onchange="verificarenvio()">
+          <input type="submit" name="sub">
+        </form>
       </div>
     </div>
     <script>
       const cursorText = document.getElementById('cursor-text');
+      
+     function verificarenvio()
+     {
+      var origem = document.getElementById("origem");
+      var destino = document.getElementById("destino");
+      var formulario = document.getElementById("form");
+
+      
+
+     }
 
       document.addEventListener('mousemove', (e) => {
         const x = e.clientX;
@@ -87,41 +102,145 @@
           
           if(x >= 18 && x <= 660 && y >= 48 && y <= 80){
             console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida 1');
+            console.log(document.getElementById("origem").value)
+            console.log(document.getElementById("destino").value)
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "avenida1"
+              document.getElementById("destino").value = "avenida1"
+              console.log(document.getElementById("origem").value)
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "avenida1"
+            }
+             
           }
 
           if(x >= 170 && x <= 200 && y >= 86 && y <= 358){
             console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Rua 5');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "rua5"
+              document.getElementById("destino").value = "rua5"
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "rua5"
+            }
           }
 
           if(x >= 18 && x <= 167 && y >= 237 && y <= 267){
             console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Rua 2');
+            console.log(document.getElementById("origem").value)
+            console.log(document.getElementById("destino").value)
+             if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "rua2"
+              document.getElementById("destino").value = "rua2"
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "rua2"
+            }
           }
 
           if(x >= 18 && x <= 659 && y >= 363 && y <= 389){
             console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "avenidab"
+              document.getElementById("destino").value = "avenidab"
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "avenidab"
+            }
           }
 
           if(x >= 284 && x <= 316 && y >= 84 && y <= 356){
             console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Rua 7');
+            console.log(document.getElementById("origem").value)
+            console.log(document.getElementById("destino").value)
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "rua7"
+              document.getElementById("destino").value = "rua7"
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "rua7"
+            }
           }
 
           if(x >= 321 && x <= 587 && y >= 235 && y <= 258){
             console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Rua 4');
+            console.log(document.getElementById("origem").value)
+            console.log(document.getElementById("destino").value)
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "rua4"
+              document.getElementById("destino").value = "rua4"
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "rua4"
+            }
           }
 
           if(x >= 445 && x <= 472 && y >= 86 && y <= 228){
             console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Rua 8');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "rua8"
+              document.getElementById("destino").value = "rua8"
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "rua8"
+            }
           }
           else if(x >= 447 && x <= 475 && y >= 266 && y <= 358){
             console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Rua 8');
+            console.log(document.getElementById("origem").value)
+            console.log(document.getElementById("destino").value)
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("destino").value = "rua8"
+              document.getElementById("origem").value = "rua8"
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "rua8"
+            }
           }
 
           if(x >= 503 && x <= 533 && y >= 394 && y <= 471){
             console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Rua 11');
+            console.log(document.getElementById("origem").value)
+            console.log(document.getElementById("destino").value)
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "rua11"
+            }
+            if(document.getElementById("destino").value!=document.getElementById("origem").value && document.getElementById("destino").value == "")
+            {
+              document.getElementById("destino").value = "rua11"
+            }
           }
 
           if(x >= 598 && x <= 625 && y >= 84 && y <= 355){
             console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Rua 13');
+            console.log(document.getElementById("origem").value)
+            console.log(document.getElementById("destino").value)
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "rua13"
+            }
+            if(document.getElementById("destino").value!=document.getElementById("origem").value && document.getElementById("destino").value == "")
+            {
+              document.getElementById("destino").value = "rua13"
+            }
           }
         });
     </script>
