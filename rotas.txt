@@ -1,0 +1,10 @@
+avenidaA,avenidaB,rua2,rua5,rua7,rua4,rua13,rua11,rua8
+rua5,rua7,rua8,rua13
+rua7,rua5,rua13,rua8,rua11
+rua5
+avenidaA,avenidaB,rua2
+avenidaA,avenidaB,rua4
+rua7,rua8,rua13
+avenidaA,avenidaB,rua4
+avenidaB
+avenidaA,avenidaB,rua4
