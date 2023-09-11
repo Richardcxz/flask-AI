@@ -1,6 +1,8 @@
 from flask import Flask,render_template,request,jsonify
 from calculorota import Gera_Problema,pegardestino
+import watchgod
 app = Flask(__name__)
+
 
 @app.route("/")
 def index():
@@ -22,5 +24,6 @@ def post():
    
 if __name__ == "__main__":
     app.run()
+    watchgod.watch("app.py", "static", "templates", callback=lambda: app.run(debug=True))
 
 

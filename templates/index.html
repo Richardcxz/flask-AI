@@ -64,26 +64,24 @@
     <div class="flex-container">
       <div>
         <img id="mapa" style="width: 832px; height: auto;" src="/static/map.jpg">
-        <form action="/" method="post">
-          <input type="hidden" id="origem" value="" name="origen" onchange="verificarenvio()">
-          <input type="hidden" id="destino" value="" name="destinon" onchange="verificarenvio()">
-          <input type="submit" name="sub">
+        <form action="/" method="post" name="form1">
+          <input type="hidden" id="origem" value="" name="origen">
+          <input type="hidden" id="destino" value="" name="destinon">
+          
         </form>
       </div>
     </div>
     <script>
+      const destino = document.getElementById("destino")
+      destino.addEventListener('input',function(){
+
+        if(destino.value !="" && destino.value != document.getElementById("origem").value)
+        {
+          
+        }
+      })
+       // 
       const cursorText = document.getElementById('cursor-text');
-      
-     function verificarenvio()
-     {
-      var origem = document.getElementById("origem");
-      var destino = document.getElementById("destino");
-      var formulario = document.getElementById("form");
-
-      
-
-     }
-
       document.addEventListener('mousemove', (e) => {
         const x = e.clientX;
         const y = e.clientY;
@@ -108,11 +106,22 @@
             {
               document.getElementById("origem").value = "avenidaA"
               document.getElementById("destino").value = "avenidaA"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
               console.log(document.getElementById("origem").value)
             }
             if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
             {
               document.getElementById("destino").value = "avenidaA"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+              
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+              document.forms["form1"].submit()
             }
              
           }
@@ -123,10 +132,21 @@
             {
               document.getElementById("origem").value = "rua5"
               document.getElementById("destino").value = "rua5"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
             }
             if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
             {
               document.getElementById("destino").value = "rua5"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+              document.forms["form1"].submit()
             }
           }
 
@@ -138,10 +158,21 @@
             {
               document.getElementById("origem").value = "rua2"
               document.getElementById("destino").value = "rua2"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
             }
             if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
             {
               document.getElementById("destino").value = "rua2"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+            
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+              document.forms["form1"].submit()
             }
           }
 
@@ -151,10 +182,21 @@
             {
               document.getElementById("origem").value = "avenidaB"
               document.getElementById("destino").value = "avenidaB"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
             }
             if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
             {
               document.getElementById("destino").value = "avenidaB"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+            
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+              document.forms["form1"].submit()
             }
           }
 
@@ -166,10 +208,21 @@
             {
               document.getElementById("origem").value = "rua7"
               document.getElementById("destino").value = "rua7"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
             }
             if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
             {
               document.getElementById("destino").value = "rua7"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+              document.forms["form1"].submit()
             }
           }
 
@@ -181,10 +234,21 @@
             {
               document.getElementById("origem").value = "rua4"
               document.getElementById("destino").value = "rua4"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
             }
             if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
             {
               document.getElementById("destino").value = "rua4"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+              document.forms["form1"].submit()
             }
           }
 
@@ -194,10 +258,21 @@
             {
               document.getElementById("origem").value = "rua8"
               document.getElementById("destino").value = "rua8"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
             }
             if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
             {
               document.getElementById("destino").value = "rua8"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+              
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+              document.forms["form1"].submit()
             }
           }
           else if(x >= 556 && x <= 588 && y >= 330 && y <= 445){
@@ -208,10 +283,21 @@
             {
               document.getElementById("destino").value = "rua8"
               document.getElementById("origem").value = "rua8"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
             }
             if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
             {
               document.getElementById("destino").value = "rua8"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+              document.forms["form1"].submit()
             }
           }
 
@@ -223,10 +309,22 @@
             {
               document.getElementById("origem").value = "rua11"
               document.getElementById("destino").value = "rua11"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+               
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
             }
             if(document.getElementById("destino").value!=document.getElementById("origem").value && document.getElementById("destino").value == "")
             {
               document.getElementById("destino").value = "rua11"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+              document.forms["form1"].submit()
             }
           }
 
@@ -238,10 +336,21 @@
             {
               document.getElementById("origem").value = "rua13"
               document.getElementById("destino").value = "rua13"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
             }
             if(document.getElementById("destino").value!=document.getElementById("origem").value && document.getElementById("destino").value == "")
             {
               document.getElementById("destino").value = "rua13"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+              document.forms["form1"].submit()
             }
           }
         });
