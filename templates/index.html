@@ -63,7 +63,7 @@
     <div id="cursor-text">SELECIONE UM PONTO DE ORIGEM</div>
     <div class="flex-container">
       <div>
-        <img id="mapa" style="max-width: 50%;" src="/static/map.jpg">
+        <img id="mapa" style="width: 832px; height: auto;" src="/static/map.jpg">
         <form action="/" method="post">
           <input type="hidden" id="origem" value="" name="origen" onchange="verificarenvio()">
           <input type="hidden" id="destino" value="" name="destinon" onchange="verificarenvio()">
@@ -100,7 +100,7 @@
           const x = e.offsetX;
           const y = e.offsetY;
           
-          if(x >= 18 && x <= 660 && y >= 48 && y <= 80){
+          if(x >= 24 && x <= 818 && y >= 61 && y <= 95){
             console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida 1');
             console.log(document.getElementById("origem").value)
             console.log(document.getElementById("destino").value)
@@ -117,7 +117,7 @@
              
           }
 
-          if(x >= 170 && x <= 200 && y >= 86 && y <= 358){
+          if(x >= 210 && x <= 250 && y >= 104 && y <= 443){
             console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Rua 5');
             if(document.getElementById("origem").value=="")
             {
@@ -130,7 +130,7 @@
             }
           }
 
-          if(x >= 18 && x <= 167 && y >= 237 && y <= 267){
+          if(x >= 23 && x <= 206 && y >= 294 && y <= 333){
             console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Rua 2');
             console.log(document.getElementById("origem").value)
             console.log(document.getElementById("destino").value)
@@ -145,7 +145,7 @@
             }
           }
 
-          if(x >= 18 && x <= 659 && y >= 363 && y <= 389){
+          if(x >= 21 && x <= 817 && y >= 452 && y <= 483){
             console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
             if(document.getElementById("origem").value=="")
             {
@@ -158,7 +158,7 @@
             }
           }
 
-          if(x >= 284 && x <= 316 && y >= 84 && y <= 356){
+          if(x >= 352 && x <= 393 && y >= 105 && y <= 444){
             console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Rua 7');
             console.log(document.getElementById("origem").value)
             console.log(document.getElementById("destino").value)
@@ -173,7 +173,7 @@
             }
           }
 
-          if(x >= 321 && x <= 587 && y >= 235 && y <= 258){
+          if(x >= 400 && x <= 726 && y >= 293 && y <= 320){
             console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Rua 4');
             console.log(document.getElementById("origem").value)
             console.log(document.getElementById("destino").value)
@@ -188,7 +188,7 @@
             }
           }
 
-          if(x >= 445 && x <= 472 && y >= 86 && y <= 228){
+          if(x >= 551 && x <= 584 && y >= 106 && y <= 284){
             console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Rua 8');
             if(document.getElementById("origem").value=="")
             {
@@ -200,7 +200,7 @@
               document.getElementById("destino").value = "rua8"
             }
           }
-          else if(x >= 447 && x <= 475 && y >= 266 && y <= 358){
+          else if(x >= 556 && x <= 588 && y >= 330 && y <= 445){
             console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Rua 8');
             console.log(document.getElementById("origem").value)
             console.log(document.getElementById("destino").value)
@@ -215,7 +215,7 @@
             }
           }
 
-          if(x >= 503 && x <= 533 && y >= 394 && y <= 471){
+          if(x >= 623 && x <= 659 && y >= 490 && y <= 584){
             console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Rua 11');
             console.log(document.getElementById("origem").value)
             console.log(document.getElementById("destino").value)
@@ -229,7 +229,7 @@
             }
           }
 
-          if(x >= 598 && x <= 625 && y >= 84 && y <= 355){
+          if(x >= 741 && x <= 775 && y >= 104 && y <= 440){
             console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Rua 13');
             console.log(document.getElementById("origem").value)
             console.log(document.getElementById("destino").value)
