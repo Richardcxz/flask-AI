@@ -7,7 +7,7 @@
         font-family: CambaiMinimalist;
         src: url(/static/CambaiMinimalist-3zeJ6.ttf);
       }
-
+      
       body {
         margin: 0;
         padding: 0;
@@ -19,6 +19,14 @@
         align-items: center;
         height: 100vh;
         cursor: crosshair;
+      }
+      .resultados{
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        height: 400px;
+        width: 200px;
+        background-color: aliceblue;
       }
 
       .flex-container {
@@ -71,6 +79,7 @@
         </form>
       </div>
     </div>
+    <div class="resultados">{{ resultado }}</div>
     <script>
       const destino = document.getElementById("destino")
       destino.addEventListener('input',function(){
@@ -316,6 +325,8 @@
             }
             if(document.getElementById("destino").value!=document.getElementById("origem").value && document.getElementById("destino").value == "")
             {
+              
+           
               document.getElementById("destino").value = "rua11"
               var origem  = document.getElementById("origem").value
               var destino =  document.getElementById("destino").value 
@@ -327,6 +338,7 @@
               document.forms["form1"].submit()
             }
           }
+          console.log(`Coordenadas: (${x}, ${y})`  );
 
           if(x >= 741 && x <= 775 && y >= 104 && y <= 440){
             console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Rua 13');

@@ -308,8 +308,8 @@ class busca(object):
     
     # BUSCA EM APROFUNDAMENTO ITERATIVO
  def aprof_iterativo(self, inicio, fim, lim_max):
-        
-     for limite in range(1,lim_max):
+    
+    for limite in range(1,lim_max):
             # manipular a PILHA para a busca
             l1 = lista()
     
@@ -368,7 +368,7 @@ class busca(object):
                                 #print("\nÁrvore de busca:\n",l2.exibeLista())
                                 return caminho
 
-            return "caminho não encontrado"
+    return "caminho não encontrado"
 
         
     # BUSCA BIDIRECIONAL
@@ -379,6 +379,10 @@ class busca(object):
         l1 = lista()
         # cópia para apresentar o caminho (somente inserção)
         l2 = lista()
+
+       
+
+        
         
         # Segundo Amplitude"
         # Manipular a FILA para a busca
@@ -550,13 +554,24 @@ def pegardestino(origem,destino):
         print("Cidade não está na lista")
         
     else:
-        caminho = sol.amplitude(origem, destino)
-        print("Amplitude: Caminho encontrado: {}".format(caminho))
-        caminho = sol.profundidade(origem,destino)
-        print("Profundidade: Caminho encontrado: {}".format(caminho))
-        caminho = sol.prof_limitada(origem,destino,3)
-        print("Profundidade Limitada: Caminho encontrado: {}".format(caminho))
-        caminho = sol.aprof_iterativo(origem,destino,5)
-        print("Aprofundamento iterativo: Caminho encontrado: {}".format(caminho))
-        caminho = sol.bidirecional(origem,destino)
-        print("Bidirecional: Caminho encontrado: {}".format(caminho))
+        amplitude = []
+        profundidade = []
+        proflimitada = []
+        aprof = []
+        bidirecional = []
+        amplitude = sol.amplitude(origem, destino)
+        print("Amplitude: Caminho encontrado: {}".format(amplitude))
+        profundidade = sol.profundidade(origem,destino)
+        print("Profundidade: Caminho encontrado: {}".format(profundidade))
+        proflimitada = sol.prof_limitada(origem,destino,3)
+        print("Profundidade Limitada: Caminho encontrado: {}".format(proflimitada))
+        aprof = sol.aprof_iterativo(origem,destino,5)
+        print("Aprofundamento iterativo: Caminho encontrado: {}".format(aprof))
+        bidirecional = sol.bidirecional(origem,destino)
+        print("Bidirecional: Caminho encontrado: {}".format(bidirecional))
+        a = "Caminho:"+' '.join(map(str,amplitude))
+        p = "Caminho:"+' '.join(map(str,profundidade))
+        pl = "Caminho:"+' '.join(map(str,proflimitada))
+        ap = "Caminho:"+' '.join(map(str,aprof))
+        bi = "Caminho:"+' '.join(map(str,bidirecional))
+        return "Amplitude:"+a+"\n Profundidade: "+p+"\n ProfundidadeLimitada:"+pl+"\n Aprofundamento Iterativo:"+ap+"\n Biderecional:"+bi
