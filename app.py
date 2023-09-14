@@ -1,6 +1,5 @@
 from flask import Flask,render_template,request,jsonify
 from calculorota import Gera_Problema,pegardestino
-import watchgod
 app = Flask(__name__)
 
 
