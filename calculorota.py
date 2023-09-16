@@ -569,9 +569,9 @@ def pegardestino(origem,destino):
         print("Aprofundamento iterativo: Caminho encontrado: {}".format(aprof))
         bidirecional = sol.bidirecional(origem,destino)
         print("Bidirecional: Caminho encontrado: {}".format(bidirecional))
-        a = "Caminho:"+' '.join(map(str,amplitude))
-        p = "Caminho:"+' '.join(map(str,profundidade))
-        pl = "Caminho:"+' '.join(map(str,proflimitada))
-        ap = "Caminho:"+' '.join(map(str,aprof))
-        bi = "Caminho:"+' '.join(map(str,bidirecional))
-        return "Amplitude:"+a+"\n Profundidade: "+p+"\n ProfundidadeLimitada:"+pl+"\n Aprofundamento Iterativo:"+ap+"\n Biderecional:"+bi
+        a = ""+' '.join(map(str,amplitude))
+        p = ""+' '.join(map(str,profundidade))
+        pl = ""+' '.join(map(str,proflimitada))
+        ap = ""+' '.join(map(str,aprof))
+        bi = ""+' '.join(map(str,bidirecional))
+        return " Amplitude:"+a+"\n Profundidade: "+p+"\n ProfundidadeLimitada:"+pl+"\n Aprofundamento Iterativo:"+ap+"\n Biderecional:"+bi
