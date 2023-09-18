@@ -309,66 +309,66 @@ class busca(object):
     # BUSCA EM APROFUNDAMENTO ITERATIVO
  def aprof_iterativo(self, inicio, fim, lim_max):
     
-    for limite in range(1,lim_max):
-            # manipular a PILHA para a busca
-            l1 = lista()
-    
-            # cópia para apresentar o caminho (somente inserção)
-            l2 = lista()
-    
-            # insere ponto inicial como nó raiz da árvore
-            l1.insereUltimo(inicio,0,None)
-            l2.insereUltimo(inicio,0,None)
-    
-            # controle de nós visitados
-            visitado = []
-            linha = []
-            linha.append(inicio)
-            linha.append(0)
-            visitado.append(linha)
-    
-            while l1.vazio() == False:
-                # remove o primeiro da fila
-                atual = l1.deletaUltimo()
-                
-                if atual.nivel<limite:
-                    ind = nos.index(atual.estado)
+        for limite in range(1,lim_max):
+                # manipular a PILHA para a busca
+                l1 = lista()
         
-                    # varre todos as conexões dentro do grafo a partir de atual
-                    for novo in grafo[ind][::-1]:
+                # cópia para apresentar o caminho (somente inserção)
+                l2 = lista()
         
-                        # pressuponho que não foi visitado
-                        flag = True
+                # insere ponto inicial como nó raiz da árvore
+                l1.insereUltimo(inicio,0,None)
+                l2.insereUltimo(inicio,0,None)
         
-                        # controle de nós repetidos
-                        for j in range(len(visitado)):
-                            if visitado[j][0]==novo:
-                                if visitado[j][1]<=(atual.nivel+1):
-                                    flag = False
-                                else:
-                                    visitado[j][1]=atual.nivel+1
-                                break
-                        
-                        # se não foi visitado inclui na fila
-                        if flag:
-                            l1.insereUltimo(novo, atual.nivel + 1, atual)
-                            l2.insereUltimo(novo, atual.nivel + 1, atual)
+                # controle de nós visitados
+                visitado = []
+                linha = []
+                linha.append(inicio)
+                linha.append(0)
+                visitado.append(linha)
         
-                            # marca como visitado
-                            linha = []
-                            linha.append(novo)
-                            linha.append(atual.nivel+1)
-                            visitado.append(linha)
-        
-                            # verifica se é o objetivo
-                            if novo == fim:
-                                caminho = []
-                                caminho += l2.exibeCaminho()
-                                #print("\nFila:\n",l1.exibeLista())
-                                #print("\nÁrvore de busca:\n",l2.exibeLista())
-                                return caminho
+                while l1.vazio() == False:
+                    # remove o primeiro da fila
+                    atual = l1.deletaUltimo()
+                    
+                    if atual.nivel<limite:
+                        ind = nos.index(atual.estado)
+            
+                        # varre todos as conexões dentro do grafo a partir de atual
+                        for novo in grafo[ind][::-1]:
+            
+                            # pressuponho que não foi visitado
+                            flag = True
+            
+                            # controle de nós repetidos
+                            for j in range(len(visitado)):
+                                if visitado[j][0]==novo:
+                                    if visitado[j][1]<=(atual.nivel+1):
+                                        flag = False
+                                    else:
+                                        visitado[j][1]=atual.nivel+1
+                                    break
+                            
+                            # se não foi visitado inclui na fila
+                            if flag:
+                                l1.insereUltimo(novo, atual.nivel + 1, atual)
+                                l2.insereUltimo(novo, atual.nivel + 1, atual)
+            
+                                # marca como visitado
+                                linha = []
+                                linha.append(novo)
+                                linha.append(atual.nivel+1)
+                                visitado.append(linha)
+            
+                                # verifica se é o objetivo
+                                if novo == fim:
+                                    caminho = []
+                                    caminho += l2.exibeCaminho()
+                                    #print("\nFila:\n",l1.exibeLista())
+                                    #print("\nÁrvore de busca:\n",l2.exibeLista())
+                                    return caminho
 
-    return "caminho não encontrado"
+        return "caminho não encontrado"
 
         
     # BUSCA BIDIRECIONAL
@@ -569,9 +569,9 @@ def pegardestino(origem,destino):
         print("Aprofundamento iterativo: Caminho encontrado: {}".format(aprof))
         bidirecional = sol.bidirecional(origem,destino)
         print("Bidirecional: Caminho encontrado: {}".format(bidirecional))
-        a = ""+' '.join(map(str,amplitude))
-        p = ""+' '.join(map(str,profundidade))
-        pl = ""+' '.join(map(str,proflimitada))
-        ap = ""+' '.join(map(str,aprof))
-        bi = ""+' '.join(map(str,bidirecional))
-        return " Amplitude:"+a+"\n Profundidade: "+p+"\n ProfundidadeLimitada:"+pl+"\n Aprofundamento Iterativo:"+ap+"\n Biderecional:"+bi
+        a = "Caminho:"+' '.join(map(str,amplitude))
+        p = "Caminho:"+' '.join(map(str,profundidade))
+        pl = "Caminho:"+' '.join(map(str,proflimitada))
+        ap = "Caminho:"+' '.join(map(str,aprof))
+        bi = "Caminho:"+' '.join(map(str,bidirecional))
+        return "Amplitude:"+a+"\n Profundidade: "+p+"\n ProfundidadeLimitada:"+pl+"\n Aprofundamento Iterativo:"+ap+"\n Biderecional:"+bi
