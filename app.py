@@ -15,7 +15,9 @@ def post():
     Gera_Problema("rotas.txt")
     pegardestino(origem,destino)
     print(origem,destino)
-    return render_template("index.html",resultado=pegardestino(origem,destino))
+    a = pegardestino(origem,destino)
+    print(a)
+    return render_template("index.html",resultado=a)
 
     
 

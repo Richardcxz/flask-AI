@@ -1,19 +1,17 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
     <title>I/ ROUTE</title>
     <style>
-      @font-face {
-        font-family: CambaiMinimalist;
-        src: url(/static/CambaiMinimalist-3zeJ6.ttf);
-      }
-      
       body {
         margin: 0;
         padding: 0;
         overflow: hidden;
         position: relative;
-        background-color: #252729;
+        background-color: #090D11;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -22,18 +20,38 @@
       }
       .resultados{
         position: absolute;
-        top: 10px;
-        right: 20px;
-        height: 400px;
-        width: 200px;
-        background-color: aliceblue;
+        top: 32%;
+        left: 30px;
+        height: 200px;
+        width: 350px;
+        background-color: #ffffff;
+        border-radius: 5%;
+        white-space: pre-wrap;
       }
+
+      .dadosresult{
+        position: absolute;
+        top: 14%;
+        left: 70px;
+        height: 200px;
+        width: 350px;
+        background-color: #grey;
+        border-radius: 5%;
+        white-space: pre-wrap;
+        color: white;
+        text-align: center;
+      }
+      .dadosresult p {
+        margin: 0;
+      }      
 
       .flex-container {
         position: relative;
         text-align: center;
         max-width: 100%;
         max-height: 100%;
+        margin-right: -25%;
+        display: inline-block;
       }
 
       .flex-container > div {
@@ -51,7 +69,7 @@
         display: none;
         color: white;
         border-radius: 5px;
-        background-color: gray;
+        background-color: #090D11;
         margin-top: -30px;
         opacity: 0.6; 
         padding: 10px;
@@ -62,6 +80,15 @@
         z-index: 2;
       }
 
+      .bolinha {
+        width: 20px;
+        height: 20px;
+        background-color: #63FAC3;
+        border-radius: 50%;
+        position: absolute;
+        pointer-events: none; /* Evita que a bolinha capture eventos de clique */
+      }      
+      
       body::-webkit-scrollbar {
         display: none;
       }
@@ -70,8 +97,9 @@
   <body>
     <div id="cursor-text">SELECIONE UM PONTO DE ORIGEM</div>
     <div class="flex-container">
-      <div>
         <img id="mapa" style="width: 832px; height: auto;" src="/static/map.jpg">
+        <br>
+        <button style="visibility: hidden;" id="btnenviar" onclick="enviarrotas()">Calcular Rota</button>
         <form action="/" method="post" name="form1">
           <input type="hidden" id="origem" value="" name="origen">
           <input type="hidden" id="destino" value="" name="destinon">
@@ -79,9 +107,39 @@
         </form>
       </div>
     </div>
-    <div class="resultados">{{ resultado }}</div>
+    <div hidden id="respegaporfavor" class="resultados">{{ resultado }}</div>
+
+    <div class="dadosresult" style="font-family: 'Montserrat', sans-serif;">
+      <p style="font-size: 23px; font-weight: bold; color: #63FAC3;">I/ ROUTE</p>
+      <br>
+      <p style="font-size: 17px; font-weight: bold;">PROFUNDIDADE</p>
+      <p id="reszero"></p>
+      <p style="font-size: 17px; font-weight: bold;">PROFUNDIDADE LIMITADA</p>
+      <p id="resum"></p>
+      <p style="font-size: 17px; font-weight: bold;">APROFUNDAMENTO ITERATIVO</p>
+      <p id="resdois"></p>
+      <p style="font-size: 17px; font-weight: bold;">BIDIRECIONAL</p>
+      <p id="restres"></p>
+    </div>
+    
     <script>
+      function enviarrotas(){
+      document.forms["form1"].submit();
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        var res = document.querySelector(".resultados").textContent;
+    
+        var sep = res.split("/");
+    
+        document.getElementById("reszero").textContent = sep[0];
+        document.getElementById("resum").textContent = sep[1];
+        document.getElementById("resdois").textContent = sep[2];
+        document.getElementById("restres").textContent = sep[3];
+      });
+
       const destino = document.getElementById("destino")
+      
       destino.addEventListener('input',function(){
 
         if(destino.value !="" && destino.value != document.getElementById("origem").value)
@@ -108,6 +166,13 @@
           const y = e.offsetY;
           
           if(x >= 24 && x <= 818 && y >= 61 && y <= 95){
+
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+
             console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida 1');
             console.log(document.getElementById("origem").value)
             console.log(document.getElementById("destino").value)
@@ -117,7 +182,7 @@
               document.getElementById("destino").value = "avenidaA"
               var origem  = document.getElementById("origem").value
               var destino =  document.getElementById("destino").value 
-              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"
               console.log(document.getElementById("origem").value)
             }
             if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
@@ -126,16 +191,23 @@
               var origem  = document.getElementById("origem").value
               var destino =  document.getElementById("destino").value
               
-              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"
             }
             if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
             {
-              document.forms["form1"].submit()
+            document.getElementById("btnenviar").style.visibility="visible";
             }
              
           }
 
           if(x >= 210 && x <= 250 && y >= 104 && y <= 443){
+
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+
             console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Rua 5');
             if(document.getElementById("origem").value=="")
             {
@@ -143,7 +215,7 @@
               document.getElementById("destino").value = "rua5"
               var origem  = document.getElementById("origem").value
               var destino =  document.getElementById("destino").value 
-              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"
             }
             if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
             {
@@ -151,15 +223,22 @@
               var origem  = document.getElementById("origem").value
               var destino =  document.getElementById("destino").value 
               
-              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"
             }
             if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
             {
-              document.forms["form1"].submit()
+            document.getElementById("btnenviar").style.visibility="visible";
             }
           }
 
           if(x >= 23 && x <= 206 && y >= 294 && y <= 333){
+
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+
             console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Rua 2');
             console.log(document.getElementById("origem").value)
             console.log(document.getElementById("destino").value)
@@ -169,7 +248,7 @@
               document.getElementById("destino").value = "rua2"
               var origem  = document.getElementById("origem").value
               var destino =  document.getElementById("destino").value 
-              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"
             }
             if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
             {
@@ -177,15 +256,22 @@
               var origem  = document.getElementById("origem").value
               var destino =  document.getElementById("destino").value 
             
-              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"
             }
             if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
             {
-              document.forms["form1"].submit()
+            document.getElementById("btnenviar").style.visibility="visible";
             }
           }
 
           if(x >= 21 && x <= 817 && y >= 452 && y <= 483){
+
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+
             console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
             if(document.getElementById("origem").value=="")
             {
@@ -193,7 +279,7 @@
               document.getElementById("destino").value = "avenidaB"
               var origem  = document.getElementById("origem").value
               var destino =  document.getElementById("destino").value 
-              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"
             }
             if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
             {
@@ -201,15 +287,22 @@
               var origem  = document.getElementById("origem").value
               var destino =  document.getElementById("destino").value 
             
-              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"
             }
             if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
             {
-              document.forms["form1"].submit()
+            document.getElementById("btnenviar").style.visibility="visible";
             }
           }
 
           if(x >= 352 && x <= 393 && y >= 105 && y <= 444){
+
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+
             console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Rua 7');
             console.log(document.getElementById("origem").value)
             console.log(document.getElementById("destino").value)
@@ -219,7 +312,7 @@
               document.getElementById("destino").value = "rua7"
               var origem  = document.getElementById("origem").value
               var destino =  document.getElementById("destino").value 
-              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"
             }
             if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
             {
@@ -227,15 +320,22 @@
               var origem  = document.getElementById("origem").value
               var destino =  document.getElementById("destino").value 
               
-              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"
             }
             if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
             {
-              document.forms["form1"].submit()
+            document.getElementById("btnenviar").style.visibility="visible";
             }
           }
 
           if(x >= 400 && x <= 726 && y >= 293 && y <= 320){
+
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+
             console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Rua 4');
             console.log(document.getElementById("origem").value)
             console.log(document.getElementById("destino").value)
@@ -245,7 +345,7 @@
               document.getElementById("destino").value = "rua4"
               var origem  = document.getElementById("origem").value
               var destino =  document.getElementById("destino").value 
-              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"
             }
             if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
             {
@@ -253,15 +353,22 @@
               var origem  = document.getElementById("origem").value
               var destino =  document.getElementById("destino").value 
               
-              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"
             }
             if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
             {
-              document.forms["form1"].submit()
+            document.getElementById("btnenviar").style.visibility="visible";
             }
           }
 
           if(x >= 551 && x <= 584 && y >= 106 && y <= 284){
+
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+
             console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Rua 8');
             if(document.getElementById("origem").value=="")
             {
@@ -269,7 +376,7 @@
               document.getElementById("destino").value = "rua8"
               var origem  = document.getElementById("origem").value
               var destino =  document.getElementById("destino").value 
-              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"
             }
             if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
             {
@@ -277,14 +384,21 @@
               var origem  = document.getElementById("origem").value
               var destino =  document.getElementById("destino").value
               
-              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"
             }
             if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
             {
-              document.forms["form1"].submit()
+            document.getElementById("btnenviar").style.visibility="visible";
             }
           }
           else if(x >= 556 && x <= 588 && y >= 330 && y <= 445){
+
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+
             console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Rua 8');
             console.log(document.getElementById("origem").value)
             console.log(document.getElementById("destino").value)
@@ -294,7 +408,7 @@
               document.getElementById("origem").value = "rua8"
               var origem  = document.getElementById("origem").value
               var destino =  document.getElementById("destino").value 
-              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"
             }
             if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
             {
@@ -302,15 +416,22 @@
               var origem  = document.getElementById("origem").value
               var destino =  document.getElementById("destino").value 
               
-              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"
             }
             if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
             {
-              document.forms["form1"].submit()
+            document.getElementById("btnenviar").style.visibility="visible";
             }
           }
 
           if(x >= 623 && x <= 659 && y >= 490 && y <= 584){
+
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+
             console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Rua 11');
             console.log(document.getElementById("origem").value)
             console.log(document.getElementById("destino").value)
@@ -321,7 +442,7 @@
               var origem  = document.getElementById("origem").value
               var destino =  document.getElementById("destino").value
                
-              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"
             }
             if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
             {
@@ -329,16 +450,23 @@
               var origem  = document.getElementById("origem").value
               var destino =  document.getElementById("destino").value 
             
-              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"
             }
             if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
             {
-              document.forms["form1"].submit()
+            document.getElementById("btnenviar").style.visibility="visible";
             }
           }
           console.log(`Coordenadas: (${x}, ${y})`  );
 
           if(x >= 741 && x <= 775 && y >= 104 && y <= 440){
+
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+
             console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Rua 13');
             console.log(document.getElementById("origem").value)
             console.log(document.getElementById("destino").value)
@@ -348,7 +476,7 @@
               document.getElementById("destino").value = "rua13"
               var origem  = document.getElementById("origem").value
               var destino =  document.getElementById("destino").value 
-              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"
             }
             if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
             {
@@ -356,11 +484,11 @@
               var origem  = document.getElementById("origem").value
               var destino =  document.getElementById("destino").value 
             
-              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"
             }
             if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
             {
-              document.forms["form1"].submit()
+            document.getElementById("btnenviar").style.visibility="visible";
             }
           }
         });
