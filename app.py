@@ -1,5 +1,6 @@
 from flask import Flask,render_template,request,jsonify
 from calculorota import Gera_Problema,pegardestino
+from greedyABusca import iniciar
 app = Flask(__name__)
 
 
@@ -12,10 +13,7 @@ def index():
 def post():
     origem = request.form['origen']
     destino = request.form['destinon']
-    Gera_Problema("rotas.txt")
-    pegardestino(origem,destino)
-    print(origem,destino)
-    a = pegardestino(origem,destino)
+    a = iniciar(origem,destino)
     print(a)
     return render_template("index.html",resultado=a)
 

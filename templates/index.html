@@ -11,7 +11,7 @@
         padding: 0;
         overflow: hidden;
         position: relative;
-        background-color: #090D11;
+        background-color: #070B14;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -35,7 +35,7 @@
         left: 70px;
         height: 200px;
         width: 350px;
-        background-color: #grey;
+        background-color: grey;
         border-radius: 5%;
         white-space: pre-wrap;
         color: white;
@@ -87,6 +87,11 @@
         border-radius: 50%;
         position: absolute;
         pointer-events: none; /* Evita que a bolinha capture eventos de clique */
+      }
+      .btn{
+        position: absolute;
+        top: 60px;
+        left: 5px;
       }      
       
       body::-webkit-scrollbar {
@@ -97,9 +102,9 @@
   <body>
     <div id="cursor-text">SELECIONE UM PONTO DE ORIGEM</div>
     <div class="flex-container">
-        <img id="mapa" style="width: 832px; height: auto;" src="/static/map.jpg">
+        <img id="mapa" style="width: 1332px; height: auto;" src="/static/map.jpg">
         <br>
-        <button style="visibility: hidden;" id="btnenviar" onclick="enviarrotas()">Calcular Rota</button>
+        <button id="btnenviar" class="btn" onclick="enviarrotas()">Calcular Rota</button>
         <form action="/" method="post" name="form1">
           <input type="hidden" id="origem" value="" name="origen">
           <input type="hidden" id="destino" value="" name="destinon">
@@ -112,14 +117,12 @@
     <div class="dadosresult" style="font-family: 'Montserrat', sans-serif;">
       <p style="font-size: 23px; font-weight: bold; color: #63FAC3;">I/ ROUTE</p>
       <br>
-      <p style="font-size: 17px; font-weight: bold;">PROFUNDIDADE</p>
+      <p style="font-size: 17px; font-weight: bold;">CUSTO UNIFORME</p>
       <p id="reszero"></p>
-      <p style="font-size: 17px; font-weight: bold;">PROFUNDIDADE LIMITADA</p>
+      <p style="font-size: 17px; font-weight: bold;">GREEDY</p>
       <p id="resum"></p>
-      <p style="font-size: 17px; font-weight: bold;">APROFUNDAMENTO ITERATIVO</p>
+      <p style="font-size: 17px; font-weight: bold;">A*</p>
       <p id="resdois"></p>
-      <p style="font-size: 17px; font-weight: bold;">BIDIRECIONAL</p>
-      <p id="restres"></p>
     </div>
     
     <script>
@@ -131,11 +134,10 @@
         var res = document.querySelector(".resultados").textContent;
     
         var sep = res.split("/");
-    
         document.getElementById("reszero").textContent = sep[0];
         document.getElementById("resum").textContent = sep[1];
         document.getElementById("resdois").textContent = sep[2];
-        document.getElementById("restres").textContent = sep[3];
+        
       });
 
       const destino = document.getElementById("destino")
@@ -164,8 +166,10 @@
       document.getElementById('mapa').addEventListener('click', (e) => {
           const x = e.offsetX;
           const y = e.offsetY;
+
+          console.log(`Coordenadas: (${x}, ${y})`)
           
-          if(x >= 24 && x <= 818 && y >= 61 && y <= 95){
+          if(x >= 867 && x <= 1097 && y >= 28 && y <= 122){
 
             var bolinha = document.createElement("div");
             bolinha.classList.add("bolinha");
@@ -178,8 +182,8 @@
             console.log(document.getElementById("destino").value)
             if(document.getElementById("origem").value=="")
             {
-              document.getElementById("origem").value = "avenidaA"
-              document.getElementById("destino").value = "avenidaA"
+              document.getElementById("origem").value = "rua42"
+              document.getElementById("destino").value = "rua42"
               var origem  = document.getElementById("origem").value
               var destino =  document.getElementById("destino").value 
               document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"
@@ -187,7 +191,7 @@
             }
             if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
             {
-              document.getElementById("destino").value = "avenidaA"
+              document.getElementById("destino").value = "rua 42"
               var origem  = document.getElementById("origem").value
               var destino =  document.getElementById("destino").value
               
@@ -200,72 +204,8 @@
              
           }
 
-          if(x >= 210 && x <= 250 && y >= 104 && y <= 443){
-
-            var bolinha = document.createElement("div");
-            bolinha.classList.add("bolinha");
-            bolinha.style.left = event.pageX - 10 + "px";
-            bolinha.style.top = event.pageY - 10 + "px";
-            document.body.appendChild(bolinha);
-
-            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Rua 5');
-            if(document.getElementById("origem").value=="")
-            {
-              document.getElementById("origem").value = "rua5"
-              document.getElementById("destino").value = "rua5"
-              var origem  = document.getElementById("origem").value
-              var destino =  document.getElementById("destino").value 
-              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"
-            }
-            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
-            {
-              document.getElementById("destino").value = "rua5"
-              var origem  = document.getElementById("origem").value
-              var destino =  document.getElementById("destino").value 
-              
-              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"
-            }
-            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
-            {
-            document.getElementById("btnenviar").style.visibility="visible";
-            }
-          }
-
-          if(x >= 23 && x <= 206 && y >= 294 && y <= 333){
-
-            var bolinha = document.createElement("div");
-            bolinha.classList.add("bolinha");
-            bolinha.style.left = event.pageX - 10 + "px";
-            bolinha.style.top = event.pageY - 10 + "px";
-            document.body.appendChild(bolinha);
-
-            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Rua 2');
-            console.log(document.getElementById("origem").value)
-            console.log(document.getElementById("destino").value)
-             if(document.getElementById("origem").value=="")
-            {
-              document.getElementById("origem").value = "rua2"
-              document.getElementById("destino").value = "rua2"
-              var origem  = document.getElementById("origem").value
-              var destino =  document.getElementById("destino").value 
-              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"
-            }
-            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
-            {
-              document.getElementById("destino").value = "rua2"
-              var origem  = document.getElementById("origem").value
-              var destino =  document.getElementById("destino").value 
-            
-              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"
-            }
-            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
-            {
-            document.getElementById("btnenviar").style.visibility="visible";
-            }
-          }
-
-          if(x >= 21 && x <= 817 && y >= 452 && y <= 483){
-
+          if(x >= 682 && x <= 866 && y >= 547 && y <= 48){
+            //avenida f
             var bolinha = document.createElement("div");
             bolinha.classList.add("bolinha");
             bolinha.style.left = event.pageX - 10 + "px";
@@ -275,15 +215,15 @@
             console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
             if(document.getElementById("origem").value=="")
             {
-              document.getElementById("origem").value = "avenidaB"
-              document.getElementById("destino").value = "avenidaB"
+              document.getElementById("origem").value = "avenidaF"
+              document.getElementById("destino").value = "avenidaF"
               var origem  = document.getElementById("origem").value
               var destino =  document.getElementById("destino").value 
               document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"
             }
             if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
             {
-              document.getElementById("destino").value = "avenidaB"
+              document.getElementById("destino").value = "avenidaF"
               var origem  = document.getElementById("origem").value
               var destino =  document.getElementById("destino").value 
             
@@ -295,161 +235,732 @@
             }
           }
 
-          if(x >= 352 && x <= 393 && y >= 105 && y <= 444){
-
+          if(x >= 699 && x <= 787 && y >= 545 && y <= 587){
             var bolinha = document.createElement("div");
             bolinha.classList.add("bolinha");
             bolinha.style.left = event.pageX - 10 + "px";
             bolinha.style.top = event.pageY - 10 + "px";
             document.body.appendChild(bolinha);
+            var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "rua2"
+              document.getElementById("destino").value = "rua2"
+            
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"
+            }
+            if(destino==origem && destino != "")
+            {
+              console.log("uai")
+              document.getElementById("destino").value = "rua2"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+            
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+            document.getElementById("btnenviar").style.visibility="visible";
+            }
+          }
 
-            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Rua 7');
-            console.log(document.getElementById("origem").value)
-            console.log(document.getElementById("destino").value)
+          if(x >= 719 && x <= 806 && y >= 491 && y <= 533){
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+            var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "rua4"
+              document.getElementById("destino").value = "rua4"
+              
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"
+            }
+            if(destino==origem && destino != "")
+            {
+              console.log("uai")
+              document.getElementById("destino").value = "rua4"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+            
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+            document.getElementById("btnenviar").style.visibility="visible";
+            }
+          }
+
+          if(x >= 736 && x <= 823 && y >= 438 && y <= 480){
+            //rua 6
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+            
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "rua6"
+              document.getElementById("destino").value = "rua6"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "rua6"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+            document.getElementById("btnenviar").style.visibility="visible";
+            document.getElementById("destino").value = "rua6"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+          }
+
+          if(x >= 755 && x <= 841 && y >= 386 && y <= 426){
+            //rua 10
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+            
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "rua10"
+              document.getElementById("destino").value = "rua10"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "rua10"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+            document.getElementById("btnenviar").style.visibility="visible";
+            document.getElementById("destino").value = "rua10"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+          }
+
+          if(x >= 775 && x <= 911 && y >= 332 && y <= 393){
+            //rua 9
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+            
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "rua9"
+              document.getElementById("destino").value = "rua9"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "rua9"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+            document.getElementById("btnenviar").style.visibility="visible";
+            document.getElementById("destino").value = "rua9"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+          }
+
+          if(x >= 805 && x <= 1002 && y >= 255 && y <= 336){
+            //rua 38
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+            
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "rua38"
+              document.getElementById("destino").value = "rua38"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "rua38"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+            document.getElementById("btnenviar").style.visibility="visible";
+            document.getElementById("destino").value = "rua38"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+          }
+
+          if(x >= 830 && x <= 958 && y >= 189 && y <= 234){
+            //rua 37
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+            
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "rua37"
+              document.getElementById("destino").value = "rua37"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "rua37"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+            document.getElementById("btnenviar").style.visibility="visible";
+            document.getElementById("destino").value = "rua37"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+          }
+
+          if(x >= 855 && x <= 1055 && y >= 107 && y <= 189){
+            //rua 36
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+            
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "rua36"
+              document.getElementById("destino").value = "rua36"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "rua36"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+            document.getElementById("btnenviar").style.visibility="visible";
+            document.getElementById("destino").value = "rua36"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+          }
+
+          if(x >= 887 && x <= 923 && y >= 487 && y <= 404){
+            //rua 8
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+            
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "rua8"
+              document.getElementById("destino").value = "rua8"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "rua8"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+            document.getElementById("btnenviar").style.visibility="visible";
+            document.getElementById("destino").value = "rua8"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+          }
+
+          if(x >= 847 && x <= 934 && y >= 478 && y <= 520){
+            //rua 7
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+            
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
             if(document.getElementById("origem").value=="")
             {
               document.getElementById("origem").value = "rua7"
               document.getElementById("destino").value = "rua7"
               var origem  = document.getElementById("origem").value
-              var destino =  document.getElementById("destino").value 
-              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"
+              var destino =  document.getElementById("destino").value
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
             }
             if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
             {
               document.getElementById("destino").value = "rua7"
               var origem  = document.getElementById("origem").value
               var destino =  document.getElementById("destino").value 
-              
-              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
             }
             if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
             {
             document.getElementById("btnenviar").style.visibility="visible";
+            document.getElementById("destino").value = "rua7"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
             }
           }
 
-          if(x >= 400 && x <= 726 && y >= 293 && y <= 320){
-
+          if(x >= 829 && x <= 915 && y >= 531 && y <= 573){
+            
             var bolinha = document.createElement("div");
             bolinha.classList.add("bolinha");
             bolinha.style.left = event.pageX - 10 + "px";
             bolinha.style.top = event.pageY - 10 + "px";
             document.body.appendChild(bolinha);
-
-            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Rua 4');
-            console.log(document.getElementById("origem").value)
-            console.log(document.getElementById("destino").value)
+            
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
             if(document.getElementById("origem").value=="")
             {
-              document.getElementById("origem").value = "rua4"
-              document.getElementById("destino").value = "rua4"
-              var origem  = document.getElementById("origem").value
-              var destino =  document.getElementById("destino").value 
-              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"
-            }
-            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
-            {
-              document.getElementById("destino").value = "rua4"
-              var origem  = document.getElementById("origem").value
-              var destino =  document.getElementById("destino").value 
-              
-              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"
-            }
-            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
-            {
-            document.getElementById("btnenviar").style.visibility="visible";
-            }
-          }
-
-          if(x >= 551 && x <= 584 && y >= 106 && y <= 284){
-
-            var bolinha = document.createElement("div");
-            bolinha.classList.add("bolinha");
-            bolinha.style.left = event.pageX - 10 + "px";
-            bolinha.style.top = event.pageY - 10 + "px";
-            document.body.appendChild(bolinha);
-
-            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Rua 8');
-            if(document.getElementById("origem").value=="")
-            {
-              document.getElementById("origem").value = "rua8"
-              document.getElementById("destino").value = "rua8"
-              var origem  = document.getElementById("origem").value
-              var destino =  document.getElementById("destino").value 
-              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"
-            }
-            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
-            {
-              document.getElementById("destino").value = "rua8"
+              document.getElementById("origem").value = "rua5"
+              document.getElementById("destino").value = "rua5"
               var origem  = document.getElementById("origem").value
               var destino =  document.getElementById("destino").value
-              
-              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"
-            }
-            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
-            {
-            document.getElementById("btnenviar").style.visibility="visible";
-            }
-          }
-          else if(x >= 556 && x <= 588 && y >= 330 && y <= 445){
-
-            var bolinha = document.createElement("div");
-            bolinha.classList.add("bolinha");
-            bolinha.style.left = event.pageX - 10 + "px";
-            bolinha.style.top = event.pageY - 10 + "px";
-            document.body.appendChild(bolinha);
-
-            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Rua 8');
-            console.log(document.getElementById("origem").value)
-            console.log(document.getElementById("destino").value)
-            if(document.getElementById("origem").value=="")
-            {
-              document.getElementById("destino").value = "rua8"
-              document.getElementById("origem").value = "rua8"
-              var origem  = document.getElementById("origem").value
-              var destino =  document.getElementById("destino").value 
-              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
             }
             if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
             {
-              document.getElementById("destino").value = "rua8"
+              document.getElementById("destino").value = "rua5"
               var origem  = document.getElementById("origem").value
               var destino =  document.getElementById("destino").value 
-              
-              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
             }
             if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
             {
             document.getElementById("btnenviar").style.visibility="visible";
+            document.getElementById("destino").value = "rua5"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
             }
           }
 
-          if(x >= 623 && x <= 659 && y >= 490 && y <= 584){
-
+          if(x >= 810 && x <= 895 && y >= 585 && y <= 627){
+            //rua 3
             var bolinha = document.createElement("div");
             bolinha.classList.add("bolinha");
             bolinha.style.left = event.pageX - 10 + "px";
             bolinha.style.top = event.pageY - 10 + "px";
             document.body.appendChild(bolinha);
+            
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "rua3"
+              document.getElementById("destino").value = "rua3"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "rua3"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+            document.getElementById("btnenviar").style.visibility="visible";
+            document.getElementById("destino").value = "rua3"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+          }
+          if(x >= 646 && x <= 663 && y >=142  && y <= 189){
+            //rua 1
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+            
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "rua35"
+              document.getElementById("destino").value = "rua35"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "rua35"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+            document.getElementById("btnenviar").style.visibility="visible";
+            document.getElementById("destino").value = "rua35"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+          }
 
-            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Rua 11');
-            console.log(document.getElementById("origem").value)
-            console.log(document.getElementById("destino").value)
+          if(x >= 779 && x <= 873 && y >= 627 && y <= 385){
+            //rua 1
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+            
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "rua1"
+              document.getElementById("destino").value = "rua1"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "rua1"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+            document.getElementById("btnenviar").style.visibility="visible";
+            document.getElementById("destino").value = "rua1"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+          }
+
+          if(x >= 697 && x <= 752 && y >= 303 && y <= 332){
+            //rua 11
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+            
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
             if(document.getElementById("origem").value=="")
             {
               document.getElementById("origem").value = "rua11"
               document.getElementById("destino").value = "rua11"
               var origem  = document.getElementById("origem").value
               var destino =  document.getElementById("destino").value
-               
-              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
             }
             if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
             {
               document.getElementById("destino").value = "rua11"
               var origem  = document.getElementById("origem").value
               var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+            document.getElementById("btnenviar").style.visibility="visible";
+            document.getElementById("destino").value = "rua11"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+          }
+
+          if(x >= 685 && x <= 732 && y >= 361 && y <= 387){
+            //rua 12
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
             
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "rua12"
+              document.getElementById("destino").value = "rua12"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "rua12"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+            document.getElementById("btnenviar").style.visibility="visible";
+            document.getElementById("destino").value = "rua12"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+          }
+
+          if(x >= 631 && x <= 673 && y >= 529 && y <= 373){
+            //rua 13
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+            
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "rua13"
+              document.getElementById("destino").value = "rua13"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "rua13"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+            document.getElementById("btnenviar").style.visibility="visible";
+            document.getElementById("destino").value = "rua13"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+          }
+
+          if(x >= 507 && x <= 877 && y >= 535 && y <= 677){
+            //avenida a
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+            
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "avenidaA"
+              document.getElementById("destino").value = "avenidaA"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "avenidaA"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+            document.getElementById("btnenviar").style.visibility="visible";
+            document.getElementById("destino").value = "avenidaA"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+          }
+
+          if(x >= 883 && x <= 1014 && y >= 679 && y <= 348){
+            //avenida b
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+            
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "avenidaB"
+              document.getElementById("destino").value = "avenidaB"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "avenidaB"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+            document.getElementById("btnenviar").style.visibility="visible";
+            document.getElementById("destino").value = "avenidaB"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+          }
+
+          if(x >= 1012 && x <= 1094 && y >= 325 && y <= 127){
+            //rua 43
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+            
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "rua43"
+              document.getElementById("destino").value = "rua43"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "rua43"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+            document.getElementById("btnenviar").style.visibility="visible";
+            document.getElementById("destino").value = "rua43"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+        }
+
+          if(x >= 867 && x <= 930 && y >= 293 && y <= 381){
+            //cruzamento b
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "cruzamentoB"
+              document.getElementById("destino").value = "cruzamentoB"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"
+              console.log(document.getElementById("origem").value)
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "cruzamentoB"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+              
               document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"
             }
             if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
@@ -457,34 +968,1099 @@
             document.getElementById("btnenviar").style.visibility="visible";
             }
           }
-          console.log(`Coordenadas: (${x}, ${y})`  );
 
-          if(x >= 741 && x <= 775 && y >= 104 && y <= 440){
+          if(x >= 941 && x <= 967 && y >= 298 && y <= 249){
+            //rua 40
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+            
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "rua40"
+              document.getElementById("destino").value = "rua40"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "rua40"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+            document.getElementById("btnenviar").style.visibility="visible";
+            document.getElementById("destino").value = "rua40"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+          }
 
+          if(x >= 968 && x <= 989 && y <=226 && y >= 172){
+            //rua 41
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+            
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "rua41"
+              document.getElementById("destino").value = "rua41"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "rua41"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+            document.getElementById("btnenviar").style.visibility="visible";
+            document.getElementById("destino").value = "rua41"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+          }
+
+          if(x >= 990 && x <= 1016 && y >= 149 && y <= 99){
+            //rua 39
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+            
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "rua39"
+              document.getElementById("destino").value = "rua39"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "rua39"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+            document.getElementById("btnenviar").style.visibility="visible";
+            document.getElementById("destino").value = "rua39"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+          }
+
+          if(x >= 521 && x <= 644 && y >= 233 && y <= 435){
+            //via a
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+            
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "viaA"
+              document.getElementById("destino").value = "viaA"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "viaA"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+            document.getElementById("btnenviar").style.visibility="visible";
+            }
+          }
+
+          if(x >= 555 && x <= 586 && y >= 385 && y <= 363){
+            //rua 14
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+            
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "rua14"
+              document.getElementById("destino").value = "rua14"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "rua14"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+            document.getElementById("btnenviar").style.visibility="visible";
+            }
+          }
+
+          if(x >= 563 && x <= 590 && y >= 400 && y <= 555){
+            //cruzamento a
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+            
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "cruzamentoA"
+              document.getElementById("destino").value = "cruzamentoA"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "cruzamentoA"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+            document.getElementById("btnenviar").style.visibility="visible";
+            }
+          }
+
+          if(x >= 398 && x <=419  &&y>=377 && y<=391){
+            //rua 21
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+            
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "rua21"
+              document.getElementById("destino").value = "rua21"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "rua21"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+            document.getElementById("btnenviar").style.visibility="visible";
+            }
+          }
+
+          if(x >= 236 && x <= 366 && y >= 459 && y <= 627){
+            //rua 22
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+            
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "rua22"
+              document.getElementById("destino").value = "rua22"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "rua22"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+            document.getElementById("btnenviar").style.visibility="visible";
+            document.getElementById("destino").value = "rua22"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+          }
+          
+          if(x >= 232 && x <= 278 && y >= 349 && y <= 368){
+            //rua 23
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+            
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "rua23"
+              document.getElementById("destino").value = "rua23"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "rua23"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+            document.getElementById("btnenviar").style.visibility="visible";
+            document.getElementById("destino").value = "rua23"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+          }
+
+          if(x >= 295 && x <= 383 && y >= 360 && y <= 480){
+            //rua 17
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+            
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "rua17"
+              document.getElementById("destino").value = "rua17"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "rua17"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+            document.getElementById("btnenviar").style.visibility="visible";
+            document.getElementById("destino").value = "rua17"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            
+          }
+        }
+
+        if(x >= 386 && x <= 491 && y >= 544 && y <= 626){
+            //rua 17
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+            
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "rua24"
+              document.getElementById("destino").value = "rua24"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "rua24"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+            document.getElementById("btnenviar").style.visibility="visible";
+            document.getElementById("destino").value = "rua24"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            
+          }
+        }
+
+          if(x >= 321 && x <= 471 && y >= 545 && y <= 436){
+            //rua 16
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+            
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "rua16"
+              document.getElementById("destino").value = "rua16"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "rua16"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+            document.getElementById("btnenviar").style.visibility="visible";
+            document.getElementById("destino").value = "rua16"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+          }
+
+          if(x >= 387 && x <= 418 && y >= 303 && y <= 357){
+            //rua 19
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+            
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "rua19"
+              document.getElementById("destino").value = "rua19"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "rua19"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+            document.getElementById("btnenviar").style.visibility="visible";
+            document.getElementById("destino").value = "rua19"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+          }
+
+          if(x >= 375 && x <= 553 && y >= 438 && y <= 544){
+            //rua 15
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+            
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "rua15"
+              document.getElementById("destino").value = "rua15"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "rua15"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+            document.getElementById("btnenviar").style.visibility="visible";
+            document.getElementById("destino").value = "rua15"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+          }
+
+          if(x >= 349 && x <= 418 && y >= 355 && y <= 446){
+            //rua 18
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+            
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "rua18"
+              document.getElementById("destino").value = "rua18"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "rua18"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+            document.getElementById("btnenviar").style.visibility="visible";
+            document.getElementById("destino").value = "rua18"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+          }
+
+          if(x >= 423 && x <= 555 && y >= 206 && y <= 367){
+            //via b
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "viaB"
+              document.getElementById("destino").value = "viaB"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"
+              console.log(document.getElementById("origem").value)
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "viaB"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+              
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+            document.getElementById("btnenviar").style.visibility="visible";
+            }
+          }
+
+          if(x >= 410 && x <= 533 && y >= 255 && y <= 418){
+            //rua 20
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+            
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "rua20"
+              document.getElementById("destino").value = "rua20"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "rua20"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+            document.getElementById("btnenviar").style.visibility="visible";
+            document.getElementById("destino").value = "rua20"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+          }
+
+          if(x >= 379 && x <= 419 && y >= 296 && y <= 197){
+            //rua 26
+            
+            //rua 17
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+            
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "rua26"
+              document.getElementById("destino").value = "rua26"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "rua26"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+            document.getElementById("btnenviar").style.visibility="visible";
+            document.getElementById("destino").value = "rua26"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            
+          }
+        
+          }
+
+          if(x >= 324 && x <= 364 && y >= 276 && y <= 179){
+            
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+            
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "rua25"
+              document.getElementById("destino").value = "rua25"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "rua25"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+            document.getElementById("btnenviar").style.visibility="visible";
+            document.getElementById("destino").value = "rua25"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            
+          }
+        
+          }
+
+          if(x >= 280 && x <= 357 && y >= 22 && y <=280){
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+            
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "rua27"
+              document.getElementById("destino").value = "rua27"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "rua27"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+            document.getElementById("btnenviar").style.visibility="visible";
+            document.getElementById("destino").value = "rua27"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            
+          }
+        
+          }
+
+          if(x >= 323 && x <= 609 && y >= 147 && y <= 257){
+            //avenida c
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+            
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "avenidaC"
+              document.getElementById("destino").value = "avenidaC"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "avenidaC"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+            document.getElementById("btnenviar").style.visibility="visible";
+            document.getElementById("destino").value = "avenidaC"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+          }
+
+          if(x >= 342 && x <= 629 && y >= 94 && y <= 206 ){
+            //avenida d
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+            
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "avenidaD"
+              document.getElementById("destino").value = "avenidaD"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "avenidaD"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+            document.getElementById("btnenviar").style.visibility="visible";
+            document.getElementById("destino").value = "avenidaD"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+          }
+
+          if(x >= 369 && x <= 806 && y >= 19 && y <= 185){
+            //avenida e
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+            
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "avenidaE"
+              document.getElementById("destino").value = "avenidaE"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "avenidaE"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+            document.getElementById("btnenviar").style.visibility="visible";
+            document.getElementById("destino").value = "avenidaE"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+          }
+
+          if(x >= 491 && x <= 519 && y >= 139 && y <= 88){
+            //rua 28
+           
+            //rua 17
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+            
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "rua28"
+              document.getElementById("destino").value = "rua28"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "rua28"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+            document.getElementById("btnenviar").style.visibility="visible";
+            document.getElementById("destino").value = "rua28"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            
+          }
+        
+          }
+
+          if(x >= 518 && x <= 541 && y >= 66 && y <= 21){
+            //rua 29
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+            
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "rua29"
+              document.getElementById("destino").value = "rua29"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "rua29"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+            document.getElementById("btnenviar").style.visibility="visible";
+            document.getElementById("destino").value = "rua29"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            
+          }
+          }
+
+          if(x >= 543 && x <= 592 && y >= 12 && y <= 71){
+            //rua 30
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+            
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "rua30"
+              document.getElementById("destino").value = "rua30"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "rua30"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+            document.getElementById("btnenviar").style.visibility="visible";
+            document.getElementById("destino").value = "rua30"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            
+          }
+          }
+
+          if(x >= 546 && x <= 566 && y >= 220 && y <= 191){
+            //rua 31
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+            
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "rua31"
+              document.getElementById("destino").value = "rua31"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "rua31"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+            document.getElementById("btnenviar").style.visibility="visible";
+            document.getElementById("destino").value = "rua31"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            
+          }
+          }
+          
+          if(x >= 564 && x <= 594 && y >= 167 && y <= 114){
+            //rua 32
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+            
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "rua32"
+              document.getElementById("destino").value = "rua32"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "rua32"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+            document.getElementById("btnenviar").style.visibility="visible";
+            document.getElementById("destino").value = "rua32"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            
+          }
+          }
+
+          if(x >= 631 && x <= 831 && y >= 26 && y <= 107){
+            //rua 33
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+            
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "rua33"
+              document.getElementById("destino").value = "rua33"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "rua33"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+            document.getElementById("btnenviar").style.visibility="visible";
+            document.getElementById("destino").value = "rua33"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            
+          }
+          }
+
+          if(x >= 620 && x <= 638 && y >= 247 && y <= 216){
+            //rua 34
+            var bolinha = document.createElement("div");
+            bolinha.classList.add("bolinha");
+            bolinha.style.left = event.pageX - 10 + "px";
+            bolinha.style.top = event.pageY - 10 + "px";
+            document.body.appendChild(bolinha);
+            
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
+            if(document.getElementById("origem").value=="")
+            {
+              document.getElementById("origem").value = "rua34"
+              document.getElementById("destino").value = "rua34"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
+            {
+              document.getElementById("destino").value = "rua34"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            }
+            if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
+            {
+            document.getElementById("btnenviar").style.visibility="visible";
+            document.getElementById("destino").value = "rua34"
+              var origem  = document.getElementById("origem").value
+              var destino =  document.getElementById("destino").value 
+              console.log()
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
+            
+          }
+          }
+
+          if(x >= 640 && x <= 666 && y >= 191 && y <= 141){
+            //rua 35
             var bolinha = document.createElement("div");
             bolinha.classList.add("bolinha");
             bolinha.style.left = event.pageX - 10 + "px";
             bolinha.style.top = event.pageY - 10 + "px";
             document.body.appendChild(bolinha);
 
-            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Rua 13');
-            console.log(document.getElementById("origem").value)
-            console.log(document.getElementById("destino").value)
+            console.log(`Coordenadas: (${x}, ${y})`  + '\nInicial: Avenida B');
             if(document.getElementById("origem").value=="")
             {
-              document.getElementById("origem").value = "rua13"
-              document.getElementById("destino").value = "rua13"
+              document.getElementById("origem").value = "avenida35"
+              document.getElementById("destino").value = "avenida35"
               var origem  = document.getElementById("origem").value
               var destino =  document.getElementById("destino").value 
-              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
             }
             if(document.getElementById("destino").value==document.getElementById("origem").value && document.getElementById("destino").value != "")
             {
-              document.getElementById("destino").value = "rua13"
+              document.getElementById("destino").value = "avenidaB"
               var origem  = document.getElementById("origem").value
               var destino =  document.getElementById("destino").value 
             
-              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"
+              document.getElementById('cursor-text').innerHTML = "ORIGEM:"+origem+"\n DESTINO:"+destino
             }
             if(document.getElementById("destino").value!=""&& document.getElementById("destino").value!= document.getElementById("origem").value)
             {
