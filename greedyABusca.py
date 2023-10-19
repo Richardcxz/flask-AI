@@ -428,19 +428,19 @@ grafo = [[['rua2',2],['rua3',2],['rua4',3],['rua5',3],['rua6',3],['rua7',3],['ru
          [['rua7',1],['rua9',2]],
          [['avenidaF',1],['cruzamentoB',2],['rua8',3]],
          [['avenidaF',1],['rua1',1]],
-         [['rua13',3],['avenidaF',1]],
+         [['avenidaF',1],['rua13',3]],
          [['rua13',1],['avenidaF',1]],
-         [['rua12',4],['rua11',5],['viaA',3],['avenidaA',1]],
+         [['avenidaA',1],['viaA',3],['rua12',4],['rua11',5]],
          [['viaA',1],['viaB',1]],
          [['rua22',1],['rua19',6],['rua20',7],['viaB',8]],
          [['rua22',1],['rua17',3],['rua18',4],['rua19',5]],
-         [['rua23',3],['rua16',1]],
+         [['rua16',1],['rua23',3]],
          [['rua16',1],['rua21',3],['rotatoriaA',4]],
-         [['rua21',3],['rua26',4],['rua16',2],['rua15',1]],
+         [['rua15',1],['rua16',2],['rua21',3],['rua26',4]],
          [['rua15',1],['rua21',4],['rua26',6]],
          [['rua18',1],['rua19',2],['rua20',3]],
          [['rua23',1],['rua16',5],['rua15',6],['rua24',8]],
-         [['rua22',1],['rua17',2],['rotatoriaA',1]],
+         [['rotatoriaA',1],['rua22',1],['rua17',2]],
          [['rua22',1],['avenidaA',5]],
          [['rotatoriaA',1],['avenidaC',3]],
          [['rotatoriaA',1],['rua19',1],['rua20',2],['avenidaC',4]],
@@ -468,10 +468,10 @@ grafo = [[['rua2',2],['rua3',2],['rua4',3],['rua5',3],['rua6',3],['rua7',3],['ru
          [['rua27',1],['rua28',2],['rua29',2],['rua32',3],['rua34',5],['avenidaF',12]],
          [['rua2',1],['rua4',2],['rua6',3],['rua10',4],['rua12',4],['rua11',5],['rua9',5],['rua38',7],['rua37',8],['rua36',9],['rua37',10]],
          [['rua14',1],['rua24',3]],
-         [['rua8',2],['rua38',1]],
+         [['rua38',1],['rua8',2]],
          [['avenidaC',1],['rua14',6],['rua13',9]],
          [['rua26',1],['avenidaC',1],['rua14',6]],
-         [['rua23',1],['rua18',2],['rua26',3],['rua25',2],['rua27',3]]
+         [['rua23',1],['rua18',2],['rua25',2],['rua26',3],['rua27',3]]
 ] 
 h = gera_H(len(nos))
 def iniciar(inicio,final):
